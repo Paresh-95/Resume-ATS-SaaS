@@ -5,12 +5,12 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
-import { ScanSearch } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Mascot } from "@/components/mascot";
 
 function RegisterForm() {
   const router = useRouter();
@@ -55,10 +55,8 @@ function RegisterForm() {
   return (
     <Card className="w-full max-w-sm p-6 sm:p-8">
       <div className="mb-6 flex flex-col items-center text-center">
-        <span className="flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-          <ScanSearch className="size-5" />
-        </span>
-        <h1 className="mt-4 font-heading text-xl font-semibold">Create your account</h1>
+        <Mascot pose="celebrate-jump" height={88} priority />
+        <h1 className="mt-2 font-heading text-xl font-semibold">Create your account</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Start with a free ATS check — no credit card required
         </p>

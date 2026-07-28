@@ -8,6 +8,7 @@ import { Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Mascot } from "@/components/mascot";
 import { PLANS, PLAN_ORDER, type PlanId } from "@/lib/billing/plans";
 import type { SubscriptionStatus } from "@prisma/client";
 
@@ -32,16 +33,23 @@ function loadRazorpayScript(): Promise<void> {
 
 function BillingToast() {
   const searchParams = useSearchParams();
+  const success = searchParams.get("success");
 
   useEffect(() => {
-    if (searchParams.get("success")) {
+    if (success) {
       toast.success("Subscription updated! It may take a few seconds to reflect below.");
     } else if (searchParams.get("canceled")) {
       toast.info("Checkout canceled.");
     }
-  }, [searchParams]);
+  }, [success, searchParams]);
 
-  return null;
+  if (!success) return null;
+
+  return (
+    <Card className="flex items-center gap-4 p-5">
+      <Mascot pose="payment-successful" height={110} priority />
+    </Card>
+  );
 }
 
 export function BillingPlanGrid({

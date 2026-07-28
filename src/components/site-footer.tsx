@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ScanSearch } from "lucide-react";
+import { Logo } from "@/components/logo";
 
 export function SiteFooter() {
   return (
@@ -7,12 +7,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-5">
           <div className="col-span-2">
-            <Link href="/" className="flex items-center gap-2 font-heading font-semibold tracking-tight">
-              <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <ScanSearch className="size-4.5" />
-              </span>
-              <span className="text-lg">SignalCV</span>
-            </Link>
+            <Logo />
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">
               AI-powered ATS resume checker: score, tailor, and rewrite your resume to land more interviews.
             </p>
