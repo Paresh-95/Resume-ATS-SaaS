@@ -1,4 +1,4 @@
-# ATSPilot
+# SignalCV
 
 AI-powered ATS resume checker SaaS built with Next.js 16, shadcn/ui, Prisma + PostgreSQL, Auth.js, LangChain (multi-vendor LLM), and Razorpay.
 

@@ -11,7 +11,7 @@ export function SiteFooter() {
               <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                 <ScanSearch className="size-4.5" />
               </span>
-              <span className="text-lg">ATSPilot</span>
+              <span className="text-lg">SignalCV</span>
             </Link>
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">
               AI-powered ATS resume checker: score, tailor, and rewrite your resume to land more interviews.
@@ -47,7 +47,7 @@ export function SiteFooter() {
 
         <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-8 sm:flex-row">
           <p className="font-mono text-xs text-muted-foreground">
-            © {new Date().getFullYear()} ATSPilot. All rights reserved.
+            © {new Date().getFullYear()} SignalCV. All rights reserved.
           </p>
         </div>
       </div>

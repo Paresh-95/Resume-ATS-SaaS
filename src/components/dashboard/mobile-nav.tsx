@@ -11,11 +11,11 @@ export function MobileNav() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center gap-2 border-b border-border/60 px-6 font-semibold tracking-tight">
+      <div className="flex h-16 items-center gap-2 border-b border-border/60 px-6 font-heading font-semibold tracking-tight">
         <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
           <ScanSearch className="size-4.5" />
         </span>
-        <span className="text-lg">ATSPilot</span>
+        <span className="text-lg">SignalCV</span>
       </div>
       <nav className="flex-1 space-y-1 p-4">
         {NAV_ITEMS.map((item) => {

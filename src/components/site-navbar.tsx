@@ -28,7 +28,7 @@ export function SiteNavbar() {
           <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <ScanSearch className="size-4.5" />
           </span>
-          <span className="text-lg">ATSPilot</span>
+          <span className="text-lg">SignalCV</span>
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

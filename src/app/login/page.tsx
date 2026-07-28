@@ -50,7 +50,7 @@ function LoginForm() {
           <ScanSearch className="size-5" />
         </span>
         <h1 className="mt-4 font-heading text-xl font-semibold">Welcome back</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Log in to your ATSPilot account</p>
+        <p className="mt-1 text-sm text-muted-foreground">Log in to your SignalCV account</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">

@@ -79,7 +79,7 @@ export function BillingPlanGrid({
       const rzp = new window.Razorpay({
         key: data.keyId,
         subscription_id: data.subscriptionId,
-        name: "ATSPilot",
+        name: "SignalCV",
         description: `${PLANS[planId].name} plan`,
         prefill: data.prefill,
         theme: { color: "#3730e5" },
