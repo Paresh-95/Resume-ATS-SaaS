@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ScanSearch } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Logo } from "@/components/logo";
 import { NAV_ITEMS } from "@/components/dashboard/nav-items";
 
 export function DashboardSidebar() {
@@ -11,11 +11,8 @@ export function DashboardSidebar() {
 
   return (
     <aside className="hidden w-64 shrink-0 border-r border-border/60 bg-muted/20 md:flex md:flex-col">
-      <div className="flex h-16 items-center gap-2 border-b border-border/60 px-6 font-heading font-semibold tracking-tight">
-        <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-          <ScanSearch className="size-4.5" />
-        </span>
-        <span className="text-lg">ATSPilot</span>
+      <div className="flex h-16 items-center gap-2 border-b border-border/60 px-6">
+        <Logo />
       </div>
 
       <nav className="flex-1 space-y-1 p-4">

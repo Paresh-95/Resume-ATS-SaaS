@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Mascot } from "@/components/mascot";
 
 const QUICK_ACTIONS = [
   {
@@ -70,7 +71,7 @@ export default async function DashboardOverviewPage() {
           <h1 className="font-heading text-2xl font-semibold tracking-tight">
             Welcome back{session?.user?.name ? `, ${session.user.name.split(" ")[0]}` : ""}
           </h1>
-          <p className="mt-1 text-muted-foreground">Here's where things stand.</p>
+          <p className="mt-1 text-muted-foreground">Here&apos;s where things stand.</p>
         </div>
         <Badge variant="secondary" className="px-3 py-1 text-sm">{plan.name} plan</Badge>
       </div>
@@ -168,11 +169,14 @@ export default async function DashboardOverviewPage() {
 
       {plan.id === "FREE" && (
         <Card className="flex flex-col items-center justify-between gap-4 border-primary/30 bg-primary/5 p-6 sm:flex-row">
-          <div>
-            <h3 className="text-sm font-semibold">Ready for more?</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Upgrade for more checks per month, AI resume generation, and full report history.
-            </p>
+          <div className="flex items-center gap-4">
+            <Mascot pose="gift-unlock" height={64} />
+            <div>
+              <h3 className="text-sm font-semibold">Ready for more?</h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Upgrade for more checks per month, AI resume generation, and full report history.
+              </p>
+            </div>
           </div>
           <Link href="/dashboard/billing" className={buttonVariants({ className: "shrink-0" })}>
             View plans

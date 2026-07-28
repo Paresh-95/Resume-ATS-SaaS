@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { Mascot } from "@/components/mascot";
 import { ResumeSelector } from "@/components/dashboard/resume-selector";
 
 interface Generation {
@@ -117,6 +118,10 @@ export default function GenerateResumePage() {
 
       {generation && (
         <div className="space-y-6">
+          <Card className="flex items-center justify-center p-4">
+            <Mascot pose="generation-complete" height={140} priority />
+          </Card>
+
           <Card className="p-6">
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-sm font-semibold">Tailored resume</h2>

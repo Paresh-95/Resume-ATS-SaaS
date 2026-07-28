@@ -21,7 +21,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ATSPilot — Beat the ATS. Land more interviews.",
+  title: "SignalCV — Get past ATS. Get noticed.",
   description:
     "AI-powered resume checker that scores your resume against ATS systems, matches it to any job description, and rewrites it to get you more interviews.",
 };

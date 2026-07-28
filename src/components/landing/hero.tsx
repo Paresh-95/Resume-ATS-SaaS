@@ -25,7 +25,7 @@ export function Hero() {
           </h1>
 
           <p className="mt-6 max-w-xl text-lg text-muted-foreground text-pretty">
-            ATSPilot scores your resume the way applicant tracking systems and
+            SignalCV scores your resume the way applicant tracking systems and
             recruiters actually read it — then tailors it to any job
             description and rewrites it for you, in seconds.
           </p>
