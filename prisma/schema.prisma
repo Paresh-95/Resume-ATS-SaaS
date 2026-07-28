@@ -1,0 +1,207 @@
+// Prisma schema for the ATS Resume Checker SaaS
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Note: Prisma pinned to 6.x (not 7.x) — v7 moved datasource url out of the
+// schema file and requires driver adapters, which is too new/unstable for
+// this project. Standard `prisma-client-js` + schema `url` works everywhere.
+
+// ---------- Auth.js (NextAuth) models ----------
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String? // bcrypt hash, only set for credentials sign-up
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+
+  resumes      Resume[]
+  reports      Report[]
+  generations  ResumeGeneration[]
+  subscription Subscription?
+  usageRecords Usage[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ---------- Product models ----------
+
+enum ResumeSource {
+  UPLOAD
+  GENERATED
+}
+
+model Resume {
+  id         String       @id @default(cuid())
+  userId     String
+  title      String
+  fileName   String?
+  mimeType   String?
+  rawText    String       @db.Text
+  source     ResumeSource @default(UPLOAD)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reports     Report[]
+  generations ResumeGeneration[]
+
+  @@index([userId])
+  @@map("resumes")
+}
+
+enum ReportType {
+  GENERAL
+  TARGETED
+}
+
+model Report {
+  id         String     @id @default(cuid())
+  userId     String
+  resumeId   String
+  type       ReportType
+  jobTitle   String?
+  jobDescription String? @db.Text
+  overallScore   Int
+  categoryScores Json // { keywords: 80, formatting: 90, ... }
+  strengths      Json // string[]
+  issues         Json // { severity, title, detail, section }[]
+  missingKeywords Json? // string[] for targeted reports
+  matchedKeywords Json? // string[] for targeted reports
+  rawModelOutput  Json? // full LLM response for debugging/reuse
+  createdAt       DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([resumeId])
+  @@map("reports")
+}
+
+model ResumeGeneration {
+  id             String   @id @default(cuid())
+  userId         String
+  sourceResumeId String?
+  jobTitle       String?
+  jobDescription String   @db.Text
+  generatedText  String   @db.Text
+  summary        Json? // { changes: string[], addedKeywords: string[] }
+  createdAt      DateTime @default(now())
+
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sourceResume Resume? @relation(fields: [sourceResumeId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@map("resume_generations")
+}
+
+// ---------- Billing / subscriptions ----------
+
+enum Plan {
+  FREE
+  BASIC
+  PRO
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  TRIALING
+  PAST_DUE
+  CANCELED
+  INCOMPLETE
+  UNPAID
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String             @unique
+  plan                 Plan               @default(FREE)
+  status               SubscriptionStatus @default(ACTIVE)
+  stripeCustomerId     String?            @unique
+  stripeSubscriptionId String?            @unique
+  stripePriceId        String?
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean            @default(false)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+// Tracks monthly usage against plan limits (e.g. number of checks/generations)
+enum UsageAction {
+  GENERAL_CHECK
+  TARGETED_CHECK
+  GENERATION
+}
+
+model Usage {
+  id        String      @id @default(cuid())
+  userId    String
+  action    UsageAction
+  periodKey String // e.g. "2026-07" - month bucket for rate limiting
+  count     Int         @default(0)
+  updatedAt DateTime    @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, action, periodKey])
+  @@map("usage")
+}
