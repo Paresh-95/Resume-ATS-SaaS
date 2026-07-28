@@ -1,7 +1,7 @@
 function getScoreColor(score: number) {
-  if (score >= 80) return "var(--chart-2, #22c55e)";
-  if (score >= 60) return "var(--chart-4, #eab308)";
-  return "var(--destructive, #ef4444)";
+  if (score >= 80) return "var(--pass)";
+  if (score >= 60) return "var(--chart-4)";
+  return "var(--alert)";
 }
 
 function getScoreLabel(score: number) {
@@ -28,7 +28,7 @@ export function ScoreGauge({ score, size = 140 }: { score: number; size?: number
         className="absolute flex flex-col items-center justify-center rounded-full bg-background"
         style={{ width: size - 18, height: size - 18 }}
       >
-        <span className="text-3xl font-bold tracking-tight">{Math.round(clamped)}</span>
+        <span className="font-mono text-3xl font-semibold tracking-tight">{Math.round(clamped)}</span>
         <span className="text-xs font-medium text-muted-foreground">{getScoreLabel(clamped)}</span>
       </div>
     </div>

@@ -36,7 +36,10 @@ export function FaqSection() {
   return (
     <section id="faq" className="mx-auto max-w-3xl px-4 py-24 sm:px-6 lg:px-8">
       <div className="text-center">
-        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+        <span className="font-mono text-xs font-medium tracking-widest text-primary uppercase">
+          FAQ
+        </span>
+        <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
           Frequently asked questions
         </h2>
       </div>
