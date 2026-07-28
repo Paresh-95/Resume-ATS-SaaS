@@ -40,9 +40,9 @@ cp .env.example .env
 | `AUTH_SECRET` | Yes | Generate with `npx auth secret` or `openssl rand -base64 32`. |
 | `NEXTAUTH_URL` | Yes | `http://localhost:3000` in dev. |
 | `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` | No | Leave blank to disable Google sign-in (credentials login still works). |
-| `MODEL_PROVIDER` | Yes (for AI features) | `"openai"` or `"anthropic"`. |
+| `MODEL_PROVIDER` | Yes (for AI features) | `"openai"`, `"anthropic"`, or `"groq"`. |
 | `MODEL_NAME` | No | Defaults to a sensible model per provider. |
-| `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` | One required for AI features | Only the key matching `MODEL_PROVIDER` is used. Without it, general/targeted checks fall back to rule-based/keyword-only scoring, and the AI resume generator is disabled. |
+| `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` / `GROQ_API_KEY` | One required for AI features | Only the key matching `MODEL_PROVIDER` is used. Without it, general/targeted checks fall back to rule-based/keyword-only scoring, and the AI resume generator is disabled. |
 | `STRIPE_SECRET_KEY` | Yes (for billing) | From the Stripe dashboard. |
 | `STRIPE_WEBHOOK_SECRET` | Yes (for billing) | From `stripe listen` (dev) or your webhook endpoint config (prod). |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | No (not currently used client-side, reserved) | |

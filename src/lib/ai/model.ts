@@ -1,17 +1,19 @@
 import type { BaseChatModel } from "@langchain/core/language_models/chat_models";
 
-export type ModelProvider = "openai" | "anthropic";
+export type ModelProvider = "openai" | "anthropic" | "groq";
 
 const DEFAULT_MODEL_NAMES: Record<ModelProvider, string> = {
   openai: "gpt-4o-mini",
   anthropic: "claude-sonnet-5",
+  groq: "llama-3.3-70b-versatile",
 };
 
 function getProvider(): ModelProvider {
   const provider = (process.env.MODEL_PROVIDER || "anthropic").toLowerCase();
-  if (provider === "openai" || provider === "anthropic") return provider;
+  if (provider === "openai" || provider === "anthropic" || provider === "groq")
+    return provider;
   throw new Error(
-    `Unsupported MODEL_PROVIDER "${provider}". Use "openai" or "anthropic".`,
+    `Unsupported MODEL_PROVIDER "${provider}". Use "openai", "anthropic", or "groq".`,
   );
 }
 
@@ -54,15 +56,32 @@ export async function getChatModel(options?: {
         apiKey: process.env.ANTHROPIC_API_KEY,
       }) as unknown as BaseChatModel;
     }
+    case "groq": {
+      if (!process.env.GROQ_API_KEY) {
+        throw new Error(
+          "GROQ_API_KEY is not set. Add it to .env to use MODEL_PROVIDER=groq.",
+        );
+      }
+      const { ChatGroq } = await import("@langchain/groq");
+      return new ChatGroq({
+        model: modelName,
+        temperature,
+        apiKey: process.env.GROQ_API_KEY,
+      }) as unknown as BaseChatModel;
+    }
   }
 }
+
+const API_KEY_ENV_VAR: Record<ModelProvider, string> = {
+  openai: "OPENAI_API_KEY",
+  anthropic: "ANTHROPIC_API_KEY",
+  groq: "GROQ_API_KEY",
+};
 
 export function isAiConfigured(): boolean {
   try {
     const provider = getProvider();
-    return provider === "openai"
-      ? Boolean(process.env.OPENAI_API_KEY)
-      : Boolean(process.env.ANTHROPIC_API_KEY);
+    return Boolean(process.env[API_KEY_ENV_VAR[provider]]);
   } catch {
     return false;
   }
