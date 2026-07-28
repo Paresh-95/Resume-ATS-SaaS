@@ -1,13 +1,13 @@
 # ATSPilot
 
-AI-powered ATS resume checker SaaS built with Next.js 16, shadcn/ui, Prisma + PostgreSQL, Auth.js, LangChain (multi-vendor LLM), and Stripe.
+AI-powered ATS resume checker SaaS built with Next.js 16, shadcn/ui, Prisma + PostgreSQL, Auth.js, LangChain (multi-vendor LLM), and Razorpay.
 
 ## Features
 
 1. **General ATS Check** — rule-based scoring engine (contact info, section structure, formatting, action verbs, quantified impact, keyword diversity, length) combined with optional AI-powered qualitative feedback.
 2. **Targeted JD Match** — paste a job description and get a match score, matched/missing keyword report, and gap analysis.
 3. **AI Resume Generator** — rewrites an existing resume tailored to a specific job description, truthfully (no fabricated experience).
-4. Landing page + dashboard, email/password + Google auth, Basic/Pro/Enterprise subscription tiers via Stripe.
+4. Landing page + dashboard, email/password + Google auth, Basic/Pro/Enterprise subscription tiers via Razorpay.
 
 ## Tech stack
 
@@ -16,7 +16,7 @@ AI-powered ATS resume checker SaaS built with Next.js 16, shadcn/ui, Prisma + Po
 - **Prisma 6** + PostgreSQL
 - **Auth.js (NextAuth v5)** — Credentials (email/password) + optional Google OAuth
 - **LangChain.js** — vendor-agnostic model wrapper (`src/lib/ai/model.ts`), swap providers via env vars only
-- **Stripe** — Checkout + subscriptions + webhooks
+- **Razorpay** — Subscriptions (Checkout modal) + webhooks
 
 ## Setup
 
@@ -43,11 +43,10 @@ cp .env.example .env
 | `MODEL_PROVIDER` | Yes (for AI features) | `"openai"`, `"anthropic"`, or `"groq"`. |
 | `MODEL_NAME` | No | Defaults to a sensible model per provider. |
 | `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` / `GROQ_API_KEY` | One required for AI features | Only the key matching `MODEL_PROVIDER` is used. Without it, general/targeted checks fall back to rule-based/keyword-only scoring, and the AI resume generator is disabled. |
-| `STRIPE_SECRET_KEY` | Yes (for billing) | From the Stripe dashboard. |
-| `STRIPE_WEBHOOK_SECRET` | Yes (for billing) | From `stripe listen` (dev) or your webhook endpoint config (prod). |
-| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | No (not currently used client-side, reserved) | |
-| `STRIPE_PRICE_BASIC` / `STRIPE_PRICE_PRO` / `STRIPE_PRICE_ENTERPRISE` | Yes (for billing) | Stripe Price IDs for each recurring plan. |
-| `NEXT_PUBLIC_APP_URL` | Yes | Used for Stripe redirect/return URLs. |
+| `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` | Yes (for billing) | From the Razorpay dashboard (Settings > API Keys). `RAZORPAY_KEY_ID` is also sent to the client to open the Checkout modal. |
+| `RAZORPAY_WEBHOOK_SECRET` | Yes (for billing) | Set when you create the webhook endpoint in the Razorpay dashboard (Settings > Webhooks). |
+| `RAZORPAY_PLAN_BASIC` / `RAZORPAY_PLAN_PRO` / `RAZORPAY_PLAN_ENTERPRISE` | Yes (for billing) | Razorpay Plan IDs for each recurring plan (Dashboard > Subscriptions > Plans). |
+| `NEXT_PUBLIC_APP_URL` | Yes | Used for post-checkout redirects. |
 
 ### 3. Set up the database
 
@@ -65,13 +64,9 @@ npm run dev
 
 Visit `http://localhost:3000`.
 
-### 5. (Optional) Test Stripe webhooks locally
+### 5. (Optional) Test Razorpay webhooks locally
 
-```bash
-stripe listen --forward-to localhost:3000/api/webhooks/stripe
-```
-
-Copy the printed webhook signing secret into `STRIPE_WEBHOOK_SECRET`.
+Razorpay has no local-forwarding CLI like Stripe's — expose your dev server with a tunnel (e.g. `ngrok http 3000`) and register the resulting URL (`https://<subdomain>.ngrok.io/api/webhooks/razorpay`) under Dashboard > Settings > Webhooks, subscribing to the `subscription.*` events. Copy the webhook secret shown there into `RAZORPAY_WEBHOOK_SECRET`.
 
 ## Subscription plans
 
@@ -94,7 +89,7 @@ src/
     ai/                    # LangChain model abstraction, schemas, chains
     ats/                   # Rule-based scoring engine + keyword extraction
     resume/                # PDF/DOCX/text parsing
-    billing/                # Plans, Stripe client, usage limits
+    billing/                # Plans, Razorpay client, usage limits
   app/
     page.tsx                # Landing page
     login/, register/       # Auth pages

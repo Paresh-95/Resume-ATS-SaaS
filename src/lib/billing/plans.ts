@@ -7,7 +7,7 @@ export interface PlanDefinition {
   name: string;
   description: string;
   priceMonthly: number | null; // null = "contact us"
-  priceEnvVar: string | null; // Stripe price ID env var name
+  planEnvVar: string | null; // Razorpay plan ID env var name
   highlight?: boolean;
   limits: {
     generalChecks: number; // per month, Infinity = unlimited
@@ -23,7 +23,7 @@ export const PLANS: Record<PlanId, PlanDefinition> = {
     name: "Free",
     description: "Try the core ATS check before you commit.",
     priceMonthly: 0,
-    priceEnvVar: null,
+    planEnvVar: null,
     limits: { generalChecks: 3, targetedChecks: 1, generations: 0 },
     features: [
       "3 general ATS checks / month",
@@ -36,7 +36,7 @@ export const PLANS: Record<PlanId, PlanDefinition> = {
     name: "Basic",
     description: "For active job seekers applying to a handful of roles.",
     priceMonthly: 9,
-    priceEnvVar: "STRIPE_PRICE_BASIC",
+    planEnvVar: "RAZORPAY_PLAN_BASIC",
     limits: { generalChecks: 20, targetedChecks: 10, generations: 5 },
     features: [
       "20 general ATS checks / month",
@@ -50,7 +50,7 @@ export const PLANS: Record<PlanId, PlanDefinition> = {
     name: "Pro",
     description: "For serious job seekers applying at volume.",
     priceMonthly: 29,
-    priceEnvVar: "STRIPE_PRICE_PRO",
+    planEnvVar: "RAZORPAY_PLAN_PRO",
     highlight: true,
     limits: {
       generalChecks: Infinity,
@@ -70,7 +70,7 @@ export const PLANS: Record<PlanId, PlanDefinition> = {
     name: "Enterprise",
     description: "For career coaches, bootcamps, and teams.",
     priceMonthly: 99,
-    priceEnvVar: "STRIPE_PRICE_ENTERPRISE",
+    planEnvVar: "RAZORPAY_PLAN_ENTERPRISE",
     limits: {
       generalChecks: Infinity,
       targetedChecks: Infinity,
@@ -92,15 +92,15 @@ export function getPlan(plan: Plan | PlanId | undefined | null): PlanDefinition 
   return PLANS[plan as PlanId];
 }
 
-export function getPriceId(plan: PlanId): string | null {
+export function getRazorpayPlanId(plan: PlanId): string | null {
   const def = PLANS[plan];
-  if (!def.priceEnvVar) return null;
-  return process.env[def.priceEnvVar] || null;
+  if (!def.planEnvVar) return null;
+  return process.env[def.planEnvVar] || null;
 }
 
-export function planFromPriceId(priceId: string): PlanId | null {
+export function planFromRazorpayPlanId(razorpayPlanId: string): PlanId | null {
   for (const id of PLAN_ORDER) {
-    if (getPriceId(id) === priceId) return id;
+    if (getRazorpayPlanId(id) === razorpayPlanId) return id;
   }
   return null;
 }
