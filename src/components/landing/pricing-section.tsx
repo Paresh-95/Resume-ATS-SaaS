@@ -9,7 +9,10 @@ export function PricingSection() {
   return (
     <section id="pricing" className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+        <span className="font-mono text-xs font-medium tracking-widest text-primary uppercase">
+          Pricing
+        </span>
+        <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
           Simple, transparent pricing
         </h2>
         <p className="mt-4 text-lg text-muted-foreground">
@@ -33,11 +36,11 @@ export function PricingSection() {
                 </Badge>
               )}
 
-              <h3 className="text-lg font-semibold">{plan.name}</h3>
+              <h3 className="font-heading text-lg font-semibold">{plan.name}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{plan.description}</p>
 
               <div className="mt-5 flex items-baseline gap-1">
-                <span className="text-4xl font-bold tracking-tight">
+                <span className="font-mono text-4xl font-semibold tracking-tight">
                   {plan.priceMonthly === null ? "Custom" : `$${plan.priceMonthly}`}
                 </span>
                 {plan.priceMonthly !== null && (
@@ -58,7 +61,7 @@ export function PricingSection() {
               <ul className="mt-6 space-y-3 border-t border-border/60 pt-6 text-sm">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2">
-                    <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                    <Check className="mt-0.5 size-4 shrink-0 text-pass" />
                     <span className="text-muted-foreground">{feature}</span>
                   </li>
                 ))}

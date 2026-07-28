@@ -30,7 +30,10 @@ export function Testimonials() {
     <section className="border-t border-border/60 bg-muted/30">
       <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          <span className="font-mono text-xs font-medium tracking-widest text-primary uppercase">
+            Results
+          </span>
+          <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
             Job seekers are getting more callbacks
           </h2>
         </div>
@@ -46,7 +49,7 @@ export function Testimonials() {
               <p className="mt-4 text-sm text-muted-foreground text-pretty">“{t.quote}”</p>
               <div className="mt-5 flex items-center gap-3">
                 <Avatar className="size-9">
-                  <AvatarFallback>{t.initials}</AvatarFallback>
+                  <AvatarFallback className="font-mono">{t.initials}</AvatarFallback>
                 </Avatar>
                 <div>
                   <p className="text-sm font-medium">{t.initials}</p>

@@ -76,7 +76,7 @@ export default function GenerateResumePage() {
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <div>
-        <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
+        <h1 className="flex items-center gap-2 font-heading text-2xl font-semibold tracking-tight">
           <FileEdit className="size-6 text-primary" />
           AI Resume Generator
         </h1>

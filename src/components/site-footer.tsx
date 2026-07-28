@@ -7,7 +7,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-5">
           <div className="col-span-2">
-            <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
+            <Link href="/" className="flex items-center gap-2 font-heading font-semibold tracking-tight">
               <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                 <ScanSearch className="size-4.5" />
               </span>
@@ -19,7 +19,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold">Product</h4>
+            <h4 className="font-mono text-xs font-medium tracking-widest text-muted-foreground uppercase">Product</h4>
             <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
               <li><Link href="/#features" className="hover:text-foreground">Features</Link></li>
               <li><Link href="/#pricing" className="hover:text-foreground">Pricing</Link></li>
@@ -28,7 +28,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold">Account</h4>
+            <h4 className="font-mono text-xs font-medium tracking-widest text-muted-foreground uppercase">Account</h4>
             <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
               <li><Link href="/login" className="hover:text-foreground">Log in</Link></li>
               <li><Link href="/register" className="hover:text-foreground">Sign up</Link></li>
@@ -37,7 +37,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold">Legal</h4>
+            <h4 className="font-mono text-xs font-medium tracking-widest text-muted-foreground uppercase">Legal</h4>
             <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
               <li><Link href="#" className="hover:text-foreground">Privacy Policy</Link></li>
               <li><Link href="#" className="hover:text-foreground">Terms of Service</Link></li>
@@ -46,7 +46,7 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-8 sm:flex-row">
-          <p className="text-xs text-muted-foreground">
+          <p className="font-mono text-xs text-muted-foreground">
             © {new Date().getFullYear()} ATSPilot. All rights reserved.
           </p>
         </div>

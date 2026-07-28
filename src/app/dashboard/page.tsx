@@ -67,7 +67,7 @@ export default async function DashboardOverviewPage() {
     <div className="mx-auto max-w-5xl space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">
+          <h1 className="font-heading text-2xl font-semibold tracking-tight">
             Welcome back{session?.user?.name ? `, ${session.user.name.split(" ")[0]}` : ""}
           </h1>
           <p className="mt-1 text-muted-foreground">Here's where things stand.</p>

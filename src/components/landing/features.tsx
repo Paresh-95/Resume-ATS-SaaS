@@ -41,7 +41,10 @@ export function Features() {
   return (
     <section id="features" className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+        <span className="font-mono text-xs font-medium tracking-widest text-primary uppercase">
+          Capabilities
+        </span>
+        <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
           Everything you need to get past the filter
         </h2>
         <p className="mt-4 text-lg text-muted-foreground text-pretty">
@@ -51,12 +54,17 @@ export function Features() {
       </div>
 
       <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">
-        {FEATURES.map((feature) => (
+        {FEATURES.map((feature, i) => (
           <Card key={feature.title} className="p-6">
-            <div className="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <feature.icon className="size-5.5" />
+            <div className="flex items-center justify-between">
+              <div className="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <feature.icon className="size-5.5" />
+              </div>
+              <span className="font-mono text-xs text-muted-foreground">
+                0{i + 1}
+              </span>
             </div>
-            <h3 className="mt-5 text-lg font-semibold">{feature.title}</h3>
+            <h3 className="mt-5 font-heading text-lg font-semibold">{feature.title}</h3>
             <p className="mt-2 text-sm text-muted-foreground text-pretty">
               {feature.description}
             </p>

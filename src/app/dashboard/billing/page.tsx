@@ -17,7 +17,7 @@ export default async function BillingPage() {
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <div>
-        <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
+        <h1 className="flex items-center gap-2 font-heading text-2xl font-semibold tracking-tight">
           <CreditCard className="size-6 text-primary" />
           Billing
         </h1>

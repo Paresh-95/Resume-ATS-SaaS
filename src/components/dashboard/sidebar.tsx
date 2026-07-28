@@ -11,7 +11,7 @@ export function DashboardSidebar() {
 
   return (
     <aside className="hidden w-64 shrink-0 border-r border-border/60 bg-muted/20 md:flex md:flex-col">
-      <div className="flex h-16 items-center gap-2 border-b border-border/60 px-6 font-semibold tracking-tight">
+      <div className="flex h-16 items-center gap-2 border-b border-border/60 px-6 font-heading font-semibold tracking-tight">
         <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
           <ScanSearch className="size-4.5" />
         </span>

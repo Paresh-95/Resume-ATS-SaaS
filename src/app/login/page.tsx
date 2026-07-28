@@ -49,7 +49,7 @@ function LoginForm() {
         <span className="flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
           <ScanSearch className="size-5" />
         </span>
-        <h1 className="mt-4 text-xl font-semibold">Welcome back</h1>
+        <h1 className="mt-4 font-heading text-xl font-semibold">Welcome back</h1>
         <p className="mt-1 text-sm text-muted-foreground">Log in to your ATSPilot account</p>
       </div>
 
