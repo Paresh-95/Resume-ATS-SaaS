@@ -51,10 +51,18 @@ cp .env.example .env
 ### 3. Set up the database
 
 ```bash
-npx prisma migrate dev --name init
+npx prisma migrate dev
 ```
 
-This creates the `users`, `accounts`, `sessions`, `resumes`, `reports`, `resume_generations`, `subscriptions`, and `usage` tables.
+This applies the committed migrations in `prisma/migrations/`, creating the `users`, `accounts`, `sessions`, `resumes`, `reports`, `resume_generations`, `subscriptions`, and `usage` tables.
+
+**Deploying to production (Vercel or anywhere else):** migrations are not applied automatically on deploy. After pointing `DATABASE_URL` at your production database for the first time, and after every schema change, run:
+
+```bash
+npx prisma migrate deploy
+```
+
+against that `DATABASE_URL` before (or right after) the app deploys. Skipping this means the app builds fine but every database-backed request (e.g. registering a user) fails with a 500, since the tables/columns won't exist yet.
 
 ### 4. Run the dev server
 
