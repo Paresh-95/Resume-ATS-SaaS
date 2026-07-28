@@ -3,10 +3,14 @@ import { z } from "zod";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { getStripe, isStripeConfigured } from "@/lib/billing/stripe";
-import { getPriceId } from "@/lib/billing/plans";
+import { getRazorpay, isRazorpayConfigured } from "@/lib/billing/razorpay";
+import { getRazorpayPlanId } from "@/lib/billing/plans";
 
 const bodySchema = z.object({ plan: z.enum(["BASIC", "PRO", "ENTERPRISE"]) });
+
+// Razorpay has no hosted Checkout page like Stripe — the client opens the
+// Razorpay Checkout modal itself using the subscription ID we create here.
+const BILLING_CYCLES_PER_SUBSCRIPTION = 12;
 
 export async function POST(request: Request) {
   const session = await auth();
@@ -14,9 +18,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  if (!isStripeConfigured()) {
+  if (!isRazorpayConfigured()) {
     return NextResponse.json(
-      { error: "Stripe is not configured yet. Add STRIPE_SECRET_KEY to .env." },
+      { error: "Razorpay is not configured yet. Add RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET to .env." },
       { status: 501 },
     );
   }
@@ -26,48 +30,42 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
   }
 
-  const priceId = getPriceId(parsed.data.plan);
-  if (!priceId) {
+  const razorpayPlanId = getRazorpayPlanId(parsed.data.plan);
+  if (!razorpayPlanId) {
     return NextResponse.json(
-      { error: `No Stripe price configured for ${parsed.data.plan}. Set its price env var in .env.` },
+      { error: `No Razorpay plan configured for ${parsed.data.plan}. Set its plan env var in .env.` },
       { status: 501 },
     );
   }
 
-  const stripe = getStripe();
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || new URL(request.url).origin;
+  const razorpay = getRazorpay();
 
-  let subscription = await prisma.subscription.findUnique({
-    where: { userId: session.user.id },
+  const rzpSubscription = await razorpay.subscriptions.create({
+    plan_id: razorpayPlanId,
+    customer_notify: 1,
+    total_count: BILLING_CYCLES_PER_SUBSCRIPTION,
+    notes: { userId: session.user.id, plan: parsed.data.plan },
   });
 
-  let stripeCustomerId = subscription?.stripeCustomerId;
-  if (!stripeCustomerId) {
-    const customer = await stripe.customers.create({
-      email: session.user.email,
-      name: session.user.name || undefined,
-      metadata: { userId: session.user.id },
-    });
-    stripeCustomerId = customer.id;
-
-    subscription = await prisma.subscription.upsert({
-      where: { userId: session.user.id },
-      create: { userId: session.user.id, stripeCustomerId },
-      update: { stripeCustomerId },
-    });
-  }
-
-  const checkoutSession = await stripe.checkout.sessions.create({
-    mode: "subscription",
-    customer: stripeCustomerId,
-    line_items: [{ price: priceId, quantity: 1 }],
-    success_url: `${appUrl}/dashboard/billing?success=1`,
-    cancel_url: `${appUrl}/dashboard/billing?canceled=1`,
-    metadata: { userId: session.user.id, plan: parsed.data.plan },
-    subscription_data: {
-      metadata: { userId: session.user.id, plan: parsed.data.plan },
+  await prisma.subscription.upsert({
+    where: { userId: session.user.id },
+    create: {
+      userId: session.user.id,
+      razorpaySubscriptionId: rzpSubscription.id,
+      razorpayPlanId,
+      status: "INCOMPLETE",
+    },
+    update: {
+      razorpaySubscriptionId: rzpSubscription.id,
+      razorpayPlanId,
+      status: "INCOMPLETE",
     },
   });
 
-  return NextResponse.json({ url: checkoutSession.url });
+  return NextResponse.json({
+    subscriptionId: rzpSubscription.id,
+    keyId: process.env.RAZORPAY_KEY_ID,
+    plan: parsed.data.plan,
+    prefill: { name: session.user.name || undefined, email: session.user.email },
+  });
 }

@@ -34,7 +34,12 @@ export default async function BillingPage() {
         </Badge>
       </Card>
 
-      <BillingPlanGrid currentPlan={plan.id} />
+      <BillingPlanGrid
+        currentPlan={plan.id}
+        subscriptionStatus={subscription?.status}
+        cancelAtPeriodEnd={subscription?.cancelAtPeriodEnd ?? false}
+        currentPeriodEnd={subscription?.currentPeriodEnd?.toISOString() ?? null}
+      />
     </div>
   );
 }
