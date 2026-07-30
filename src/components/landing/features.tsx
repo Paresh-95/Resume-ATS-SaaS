@@ -1,9 +1,14 @@
-import { ScanLine, Target, FileEdit } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { Mascot, type MascotPose } from "@/components/mascot";
 
-const FEATURES = [
+const FEATURES: {
+  pose: MascotPose;
+  title: string;
+  description: string;
+  points: string[];
+}[] = [
   {
-    icon: ScanLine,
+    pose: "review-magnify",
     title: "General ATS Check",
     description:
       "Instantly scan any resume for the formatting, structure, and content issues that get real resumes silently rejected by ATS software — before a human ever sees them.",
@@ -14,7 +19,7 @@ const FEATURES = [
     ],
   },
   {
-    icon: Target,
+    pose: "stars-laptop",
     title: "Targeted JD Match",
     description:
       "Paste any job description and get a precise match score, missing keyword report, and gap analysis — so you know exactly what to fix before you apply.",
@@ -25,7 +30,7 @@ const FEATURES = [
     ],
   },
   {
-    icon: FileEdit,
+    pose: "idea-lightbulb",
     title: "AI Resume Generator",
     description:
       "Turn your existing resume into a version tailored specifically for the role you want — rewritten to highlight the right experience, truthfully.",
@@ -57,9 +62,7 @@ export function Features() {
         {FEATURES.map((feature, i) => (
           <Card key={feature.title} className="p-6">
             <div className="flex items-center justify-between">
-              <div className="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <feature.icon className="size-5.5" />
-              </div>
+              <Mascot pose={feature.pose} height={72} />
               <span className="font-mono text-xs text-muted-foreground">
                 0{i + 1}
               </span>

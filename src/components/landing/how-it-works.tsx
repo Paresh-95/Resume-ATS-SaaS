@@ -1,21 +1,26 @@
-import { UploadCloud, Sparkles, Rocket } from "lucide-react";
+import { Mascot, type MascotPose } from "@/components/mascot";
 
-const STEPS = [
+const STEPS: {
+  pose: MascotPose;
+  tag: string;
+  title: string;
+  description: string;
+}[] = [
   {
-    icon: UploadCloud,
+    pose: "wave-laptop",
     tag: "STEP_01",
     title: "Upload your resume",
     description: "Drop in a PDF, DOCX, or plain text file. We extract and parse it instantly.",
   },
   {
-    icon: Sparkles,
+    pose: "ats-score",
     tag: "STEP_02",
     title: "Get scored & analyzed",
     description:
       "Run a general ATS check, or paste a job description for a targeted match score and keyword gap report.",
   },
   {
-    icon: Rocket,
+    pose: "report-generated",
     tag: "STEP_03",
     title: "Fix it or regenerate it",
     description:
@@ -40,12 +45,12 @@ export function HowItWorks() {
         <div className="relative mt-16 grid grid-cols-1 gap-10 md:grid-cols-3">
           <div
             aria-hidden
-            className="absolute top-7 right-[16.6%] left-[16.6%] hidden h-px bg-border md:block"
+            className="absolute top-[42px] right-[16.6%] left-[16.6%] hidden h-px bg-border md:block"
           />
           {STEPS.map((step) => (
             <div key={step.title} className="relative text-center">
-              <div className="relative mx-auto flex size-14 items-center justify-center rounded-full bg-background text-primary shadow-sm ring-1 ring-border">
-                <step.icon className="size-6" />
+              <div className="relative mx-auto flex size-[84px] items-center justify-center rounded-full bg-background shadow-sm ring-1 ring-border">
+                <Mascot pose={step.pose} height={62} />
               </div>
               <div className="mt-5 font-mono text-xs font-medium tracking-widest text-primary">
                 {step.tag}

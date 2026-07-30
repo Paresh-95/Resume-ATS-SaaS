@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Mascot } from "@/components/mascot";
 import { Star } from "lucide-react";
 
 // NOTE: Placeholder quotes for launch design purposes only — swap these for
@@ -30,7 +31,8 @@ export function Testimonials() {
     <section className="border-t border-border/60 bg-muted/30">
       <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="font-mono text-xs font-medium tracking-widest text-primary uppercase">
+          <Mascot pose="love-hearts" height={72} className="mx-auto" />
+          <span className="mt-3 block font-mono text-xs font-medium tracking-widest text-primary uppercase">
             Results
           </span>
           <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight sm:text-4xl">

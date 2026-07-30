@@ -3,20 +3,22 @@ import { Check } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Mascot } from "@/components/mascot";
 import { PLANS, PLAN_ORDER } from "@/lib/billing/plans";
 
 export function PricingSection() {
   return (
     <section id="pricing" className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-2xl text-center">
-        <span className="font-mono text-xs font-medium tracking-widest text-primary uppercase">
+        <Mascot pose="meditating-zen" height={72} className="mx-auto" />
+        <span className="mt-3 block font-mono text-xs font-medium tracking-widest text-primary uppercase">
           Pricing
         </span>
         <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
           Simple, transparent pricing
         </h2>
         <p className="mt-4 text-lg text-muted-foreground">
-          Start free. Upgrade when you're applying at volume.
+          Start free. Upgrade when you&apos;re applying at volume.
         </p>
       </div>
 
