@@ -36,7 +36,7 @@ cp .env.example .env
 
 | Variable | Required | Notes |
 |---|---|---|
-| `DATABASE_URL` | Yes | PostgreSQL connection string. Any managed Postgres works (Neon, Supabase, RDS, local). |
+| `DATABASE_URL` | Yes | PostgreSQL connection string. Recommended: [Supabase](https://supabase.com) (any managed Postgres works — RDS, local, etc. too). On Vercel, use Supabase's **connection pooler** URL (Project Settings > Database > Connection pooling, port `6543`, `?pgbouncer=true`) rather than the direct connection — serverless functions open a new DB connection per invocation and will exhaust Postgres's connection limit without it. |
 | `AUTH_SECRET` | Yes | Generate with `npx auth secret` or `openssl rand -base64 32`. |
 | `NEXTAUTH_URL` | Yes | `http://localhost:3000` in dev. |
 | `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` | No | Leave blank to disable Google sign-in (credentials login still works). |
